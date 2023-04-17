@@ -23,15 +23,21 @@ export class MyTableComponent implements OnInit
 {
    
     data: any
-    displayedColumns: string[] = ['id', 'birthDate', 'firstName', 'lastName', 'gender', 'hireDate', 'actions'];
-    
+
+    displayedColumns: string[] = ['id', 'birthDate', 'firstName', 'lastName', 'gender', 'hireDate', 'actions','actions2'];
+
+    currentUrl: string="http://localhost:9000/employees";
+
+    currentElement: any={};
+
+    links: any;
 
   constructor(private employeeService: EmployeeService){
-    
+    this.loanData(this.currentUrl);
   }
 
   ngOnInit(): void {
-    this.loanData("http://localhost:8080/employees");
+    this.loanData("http://localhost:9000/employees");
   }
 
   loanData(url: string): void{
@@ -45,6 +51,7 @@ export class MyTableComponent implements OnInit
 
   }
 
+  //impaginazione
   firstPage(){
     if(this.data) this.loanData(this.data._links.first.href);
   }
@@ -57,7 +64,27 @@ export class MyTableComponent implements OnInit
   lastPage(){
     if(this.data) this.loanData(this.data._links.last.href);
   }
-  deleteEmployee(){
+
+  //cancellazione
+  deleteEmployee(urlWithId: string){
+    this.employeeService.delete(urlWithId).subscribe( (data) =>{
+      this.loanData(this.currentUrl);
+    }
+    );
   }
 
+  //aggiunta e modifica
+  addEmployee(){
+    if(this.currentElement.id){
+      this.employeeService.put(this.currentElement._links.self.href, this.currentElement).subscribe( (data) => {
+        this.loanData(this.currentUrl);
+        }
+      )
+    } else{
+      this.employeeService.post("http://localhost:9000/employees",this.currentElement).subscribe( (data) => {
+        this.loanData(this.links.last.href);
+        } 
+      )
+    }
+  }
 }

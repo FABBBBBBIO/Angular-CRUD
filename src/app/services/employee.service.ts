@@ -19,4 +19,16 @@ export class EmployeeService {
 
   }
 
+  delete(urlWithId : string): Observable<any>{
+    return this.http.delete(urlWithId,{})
+  }
+
+  post(url : string , json: any): Observable<any>{
+    return this.http.post(url,json)
+  }
+
+  put(url : string , json: any): Observable<any>{
+    return this.http.put(url,json)
+  }
+
 }

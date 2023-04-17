@@ -4,6 +4,15 @@
 <button mat-button [disabled]= "!data?._links?.next" (click)="nextPage()" >&gt;</button>
 <button mat-button (click)="lastPage()">&gt;&gt;</button>
 
+id<input type="text" name="id" [(ngModel)]="currentElement.id">
+birthDate<input type="text" name="birthDate" [(ngModel)]="currentElement.birthDate">
+first name<input type="text" name="firstName" [(ngModel)]="currentElement.firstName">
+last name<input type="text" name="lastName" [(ngModel)]="currentElement.lastName">
+hireDate<input type="text" name="hireDate" [(ngModel)]="currentElement.hireDate">
+gender<input type="text" name="gender" [(ngModel)]="currentElement.gender">
+
+<button (click)="addEmployee()">{{currentElement.id ? 'edit' : 'add'}}</button>
+
 <table mat-table [dataSource]= "data._embedded.employees" class="mat-elevation-z8" *ngIf= "data">
 
     <!--- Note that these columns can be defined in any order.
@@ -43,13 +52,20 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> azioni </th>
-        <td mat-cell *matCellDef="let element">  <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="deleteEmployee()">
+        <th mat-header-cell *matHeaderCellDef> cestino </th>
+        <td mat-cell *matCellDef="let element">  <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="deleteEmployee(element._links.self.href)">
             <mat-icon>delete</mat-icon>
           </button></td>
         
     </ng-container>
       
+    <ng-container matColumnDef="actions2">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">  <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="this.currentElement">
+          <mat-icon>edit</mat-icon>
+        </button></td>
+      
+  </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
